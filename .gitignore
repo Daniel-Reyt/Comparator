@@ -9,3 +9,4 @@
 # IDE - VSCode
 .vscode/*
 /client/.vscode/*
+/client/.angular

@@ -19,11 +19,11 @@ services:
   comparator-angular:
     container_name: comparator-angular
     build:
-      context: .
+      context: ./client
     ports:
       - 4200:4200
     volumes:
-      - ./:/app
+      - ./client:/app
       - /app/node_modules
     command: ["npm", "run", "dev"]
     env_file:
