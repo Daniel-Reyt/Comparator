@@ -1,0 +1,4 @@
+DROP DATABASE IF EXISTS ComparatorDB;
+CREATE DATABASE ComparatorDB;
+USE ComparatorDB;
+

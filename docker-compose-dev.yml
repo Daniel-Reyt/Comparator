@@ -1,0 +1,52 @@
+version: '3.1'
+
+services:
+  comparator-node:
+    container_name: comparator-node
+    build:
+      context: ./server
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/appBack
+      - /appBack/node_modules
+    command: ["nodemon", "server"]
+    env_file:
+      - ./.env-dev
+    depends_on:
+      - mariadb
+
+  comparator-angular:
+    container_name: comparator-angular
+    build:
+      context: .
+    ports:
+      - 4200:4200
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
+    env_file:
+      - ./.env-dev
+    depends_on:
+      - comparator-node
+  
+  comparator-adminer:
+    container_name: comparator-adminer
+    image: adminer
+    depends_on:
+      - mariadb
+    ports:
+      - "86:8080"
+  
+  comparator-mariadb:
+    container_name: mariadb
+    image: mysql
+    build: 
+      context: ./BDD
+    volumes:
+      - ./BDD/data:/var/lib/mysql:z
+    env_file:
+      - ./.env-dev
+    ports:
+      - 3306:3306
