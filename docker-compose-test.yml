@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+  comparator-node:
+    container_name: comparator-node
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: ["npm", "run", "prod"]
+    env_file:
+      - ./.env-prod
+    
+  comparator-mariadb:
+    container_name: mariadb
+    image: mysql
+    build: 
+      context: ./BDD
+    volumes:
+      - ./BDD/data:/var/lib/mysql:z
+    env_file:
+      - ./.env-dev
+    ports:
+      - 3306:3306
