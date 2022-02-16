@@ -1,35 +1,33 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 describe('AppComponent', () => {
+  let http: HttpClient;
+  let users: [any] = <any>[];
+  //for DEV
+  let url = "http://localhost:8080/"
+  //for PROD
+  //let url = "http://10.3.1.58:8989/"
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        HttpClientModule
       ],
       declarations: [
         AppComponent
       ],
     }).compileComponents();
+
+    http = TestBed.inject(HttpClient);
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'client'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('client');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('client app is running!');
+  it('should get users', (done) => {
+    http.get(`${url}comparator/users`).subscribe((res: any) => {
+      expect(res.length).toBe(2)
+      done()
+    })
   });
 });

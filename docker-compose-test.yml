@@ -1,10 +1,10 @@
 version: '3.1'
 
 services:
-  comparator-node:
-    container_name: comparator-node
+  comparator-node-test:
+    container_name: comparator-node-test
     build:
-      context: .
+      context: ./server
     ports:
       - 8080:8080
     volumes:
@@ -14,7 +14,7 @@ services:
     env_file:
       - ./.env-prod
     
-  comparator-mariadb:
+  mariadb:
     container_name: mariadb
     image: mysql
     build: 
@@ -25,3 +25,18 @@ services:
       - ./.env-dev
     ports:
       - 3306:3306
+
+  comparator-angular-test:
+    container_name: comparator-angular-test
+    build:
+      context: ./client
+    ports:
+      - 9876:9876
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    command: ["npm", "run", "test"]
+    env_file:
+      - ./.env-test
+    depends_on:
+      - comparator-node-test

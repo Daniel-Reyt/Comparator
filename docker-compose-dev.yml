@@ -1,8 +1,8 @@
 version: '3.1'
 
 services:
-  comparator-node:
-    container_name: comparator-node
+  comparator-node-dev:
+    container_name: comparator-node-dev
     build:
       context: ./server
     ports:
@@ -16,8 +16,8 @@ services:
     depends_on:
       - mariadb
 
-  comparator-angular:
-    container_name: comparator-angular
+  comparator-angular-dev:
+    container_name: comparator-angular-dev
     build:
       context: ./client
     ports:
@@ -29,18 +29,18 @@ services:
     env_file:
       - ./.env-dev
     depends_on:
-      - comparator-node
+      - comparator-node-dev
   
-  comparator-adminer:
-    container_name: comparator-adminer
+  comparator-adminer-dev:
+    container_name: comparator-adminer-dev
     image: adminer
     depends_on:
-      - mariadb
+      - comparator-mariadb-dev
     ports:
       - "86:8080"
   
-  comparator-mariadb:
-    container_name: mariadb
+  comparator-mariadb-dev:
+    container_name: comparator-mariadb-dev
     image: mysql
     build: 
       context: ./BDD
